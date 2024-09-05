@@ -1,0 +1,5 @@
+# Ignorar las carpetas que se crean por la ejecutación del script
+__pycache__
+
+# Ignora el .env 
+.env 
