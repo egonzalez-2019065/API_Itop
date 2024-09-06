@@ -3,3 +3,6 @@ __pycache__
 
 # Ignora el .env 
 .env 
+
+# Ignorar el entorno virtual 
+env
