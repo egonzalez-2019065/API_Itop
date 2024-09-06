@@ -19,26 +19,21 @@ def process_json():
     try:
         # Obtener los datos del cuerpo de la solicitud
         request_data = request.get_json()
-        logging.info(f"Extracción de la solicitud: {request_data}", )
 
         # Obtener los datos del header 
         request_token = request.headers.get('Authorization')
         if request_token.startswith('Bearer '):
             request_token = request_token[len('Bearer '):]
-
-        logging.info(f"Extracción del header: {request_token}")
         
         # Extraer el token y los datos desde la solicitud
         token = request_token
         data = request_data
 
         if not token:
-            logging.info("Token:", token)
             return jsonify({'error': 'Token no proporcionado'}), 400
             
 
         if not data:
-            logging.info("Data:", data)
             return jsonify({'error': 'Datos no proporcionados'}), 400
 
         # Definir los headers con el token
@@ -46,6 +41,7 @@ def process_json():
             'Authorization': f'Bearer {token}',
             'Content-Type': 'application/json'
         }
+
 
         # Enviar los datos a la API de iTop
         itop_response = requests.post(api_itop, json=data, headers=headers)
@@ -55,6 +51,6 @@ def process_json():
             return jsonify({'success': 'Los datos fueron enviados correctamente a iTop'}), 200
         else:
             logging.info(data)
-            return jsonify({'error': 'Error al enviar los datos Itop', 'details': itop_response.text})
+            return jsonify({'error': 'Error al enviar los datos Itop', 'details': itop_response.text}, data), 500
     except requests.exceptions.RequestException as e:
         return jsonify({'error': f'Error en la petición HTTP: {str(e)}'}), 500
